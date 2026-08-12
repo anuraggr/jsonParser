@@ -144,3 +144,13 @@ TokenList tokenize(const char* jsonString){
 
 	return list;
 }
+
+void freeTokenList(TokenList* list){
+	for(int i = 0; i < list->count; i++){
+		if(list->tokens[i].value != NULL){
+			free(list->tokens[i].value);
+		}
+	}
+
+	free(list->tokens);
+}

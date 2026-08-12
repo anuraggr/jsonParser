@@ -27,5 +27,5 @@ typedef struct {
 } TokenList;
 
 TokenList tokenize(const char* jsonString);
-
+void freeTokenList(TokenList* list);
 #endif
