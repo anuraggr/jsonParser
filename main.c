@@ -1,9 +1,11 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include "tokenizer.h"
+#include "parser.h"
 
-int main(int agrc, char *argv[]){
+int main(int argc, char *argv[]){
 	if(argc < 1){
-		printf("Usage: jsonparser <file> ...\n", argv[0]);
+		printf("Usage: jsonparser <file> ...\n");
 		return -1;
 	}
 
@@ -28,7 +30,20 @@ int main(int agrc, char *argv[]){
 
 	TokenList tokens = tokenize(jsonBuffer);
 	//then parse
+	
+	JsonNode* root = parse(&tokens);
 
+	freeTokenList(&tokens);
 	free(jsonBuffer);
+
+	if(root){
+        	printf("Successfully parsed JSON:\n");
+        	printJsonNode(root, 0);
+    	} 
+	else{
+        	printf("Failed to parse JSON.\n");
+	}
+
+	freeJsonNode(root);
 	return 0;
 }
