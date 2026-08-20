@@ -172,7 +172,7 @@ JsonNode* parseValue(TokenList* list, int* idx){
 			++*idx;
 			return node;
 		default:
-			fprintf(stderr, "Json Parsing error: Unexpected token type\n", t.type);
+			fprintf(stderr, "Json Parsing error: Unexpected token type %d\n", t.type);
 			free(node);
 			return NULL;
 	}
