@@ -30,6 +30,11 @@ JsonNode* parseObject(TokenList* list, int* idx){
 	obj->capacity = 8;
 	obj->count = 0;
 	obj->pairs = malloc(sizeof(KeyValPair) * obj->capacity);
+	
+	if(*idx < list->count && list->tokens[*idx].type == TOKEN_CURLY_CLOSE){
+		++*idx;
+		return node;
+	}
 
 	while(*idx < list->count){
 		//key has to be a string
