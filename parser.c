@@ -225,3 +225,61 @@ void freeJsonNode(JsonNode* node){
 	}
 	free(node);
 }
+
+void printJsonNode(JsonNode* node, int indent) {
+    if (!node) return;
+
+    for (int i = 0; i < indent; i++) printf("  ");
+
+    switch (node->type) {
+        case STRING_VALUE:
+            printf("\"%s\"\n", node->value.stringVal);
+            break;
+        case NUMBER_VALUE:
+            printf("%g\n", node->value.numberVal);
+            break;
+        case BOOLEAN_VALUE:
+            printf("%s\n", node->value.booleanVal ? "true" : "false");
+            break;
+        case NULL_VALUE:
+            printf("null\n");
+            break;
+        case OBJECT_VALUE:
+            printf("{\n");
+            JsonObject* obj = node->value.objectVal;
+            for (int i = 0; i < obj->count; i++) {
+                for (int j = 0; j < indent + 1; j++) printf("  ");
+                printf("\"%s\": ", obj->pairs[i].key);
+
+                if (obj->pairs[i].value->type == OBJECT_VALUE || obj->pairs[i].value->type == ARRAY_VALUE) {
+                    printf("\n");
+                    printJsonNode(obj->pairs[i].value, indent + 1);
+                } else {
+                    printJsonNode(obj->pairs[i].value, 0);
+                }
+            }
+            for (int i = 0; i < indent; i++) printf("  ");
+            printf("}\n");
+            break;
+        case ARRAY_VALUE:
+            printf("[\n");
+            JsonArray* arr = node->value.arrayVal;
+            for (int i = 0; i < arr->count; i++) {
+                printJsonNode(arr->elements[i], indent + 1);
+            }
+            for (int i = 0; i < indent; i++) printf("  ");
+            printf("]\n");
+            break;
+    }
+}
+
+JsonNode* getObjectValue(JsonObject* obj, const char* key) {
+    if (!obj || !key) return NULL;
+    
+    for (int i = 0; i < obj->count; i++) {
+        if (strcmp(obj->pairs[i].key, key) == 0) {
+            return obj->pairs[i].value;
+        }
+    }
+    return NULL; 
+}

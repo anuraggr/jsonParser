@@ -49,5 +49,6 @@ typedef struct JsonArray {
 
 JsonNode* parse(TokenList* list);
 void freeJsonNode(JsonNode* node);
-
+JsonNode* getObjectValue(JsonObject* obj, const char* key);
+void printJsonNode(JsonNode* node, int indent);
 #endif
